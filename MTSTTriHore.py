@@ -1,6 +1,8 @@
 import numpy as np
 from collections import defaultdict
 
+from TriHoreState import TriHoreState
+
 
 class MonteCarloTreeSearchNode:
     def __init__(self, state, parent=None, parent_action=None):
@@ -127,20 +129,6 @@ class MonteCarloTreeSearchNode:
         represents that x is placed. Returns
         the new state after making a move.
         """
-
-
-class TriHoreState:
-    def __init__(
-        self, current_player="Jozko", tablecard=["E", "G"], hand="", played_cards=[]
-    ):
-        self.current_player = current_player
-        self.tablecard = tablecard
-        self.hand = hand
-        self.played_cards = played_cards
-        self.uncovered_cards = self.getUncovered_cards()
-
-    def getUncovered_cards(self):
-        return self.uncovered_cards
 
 
 def main():
