@@ -1,6 +1,8 @@
 import numpy as np
 from collections import defaultdict
 
+from Cards import Cards
+from Game import Game
 from TriHoreState import TriHoreState
 
 
@@ -40,18 +42,17 @@ class MonteCarloTreeSearchNode:
         return child_node
 
     def is_terminal_node(self):
-        return self.state.is_game_over()
+        return self.state.is_game_over
 
     def rollout(self):
         current_rollout_state = self.state
 
-        while not current_rollout_state.is_game_over():
-
+        while not current_rollout_state.is_game_over:
             possible_moves = current_rollout_state.get_legal_actions()
 
             action = self.rollout_policy(possible_moves)
             current_rollout_state = current_rollout_state.move(action)
-        return current_rollout_state.game_result()
+        return current_rollout_state.game_result
 
     def backpropagate(self, result):
         self._number_of_visits += 1.0
@@ -91,51 +92,28 @@ class MonteCarloTreeSearchNode:
             v.backpropagate(reward)
         return self.best_child(c_param=0.0)
 
-    def get_legal_actions(self):
-        """
-        Modify according to your game or
-        needs. Constructs a list of all
-        possible actions from current state.
-        Returns a list.
-        """
-
-    def is_game_over(self):
-        """
-        Modify according to your game or
-        needs. It is the game over condition
-        and depends on your game. Returns
-        true or false
-        """
-
-    def game_result(self):
-        """
-        Modify according to your game or
-        needs. Returns 1 or 0 or -1 depending
-        on your state corresponding to win,
-        tie or a loss.
-        """
-
-    def move(self, action):
-        """
-            Modify according to your game or
-            needs. Changes the state of your
-        board with a new value. For a normal
-        Tic Tac Toe game, it can be a 3 by 3
-        array with all the elements of array
-        being 0 initially. 0 means the board
-        position is empty. If you place x in
-        row 2 column 3, then it would be some
-        thing like board[2][3] = 1, where 1
-        represents that x is placed. Returns
-        the new state after making a move.
-        """
-
 
 def main():
-    initial_state = TriHoreState()
-    root = MonteCarloTreeSearchNode(state=initial_state)
+    game = Game()
+    karol = game.addPlayer("Karolinka")
+    terez = game.addPlayer("Terezia")
+
+    karol.draw()
+    karol.draw()
+    karol.draw()
+    karol.draw()
+    terez.draw()
+    terez.draw()
+    terez.draw()
+    terez.draw()
+    terez.draw()
+    terez.draw()
+    terez.draw()
+
+    initialstate = TriHoreState(game.player, game.player, game.players, game.deck.cards[-1], game.player.hand, [],
+                                game.deck.cards[1:])
+    root = MonteCarloTreeSearchNode(state=initialstate)
     selected_node = root.best_action()
-    print("Idze")
     return
 
 
