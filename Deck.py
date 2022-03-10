@@ -1,12 +1,15 @@
 from random import  randint
+from typing import List, Any
 
 from Card import Card
 
 
 class Deck:
+    cards: list[Card]
+
     def __init__(self):
         self.cards = []
-        self.puttedcards = []
+        self.played_cards = []
 
     def build(self):
         for v in ["Zelen", "Cerven", "Gula", "Srdce"]:

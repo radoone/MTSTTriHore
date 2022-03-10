@@ -21,7 +21,7 @@ class MonteCarloTreeSearchNode:
         return
 
     def untried_actions(self):
-        self._untried_actions = self.state.get_legal_actions()
+        self._untried_actions = self.state.get_legal_actions
         return self._untried_actions
 
     def q(self):
@@ -48,7 +48,7 @@ class MonteCarloTreeSearchNode:
         current_rollout_state = self.state
 
         while not current_rollout_state.is_game_over:
-            possible_moves = current_rollout_state.get_legal_actions()
+            possible_moves = current_rollout_state.get_legal_actions
 
             action = self.rollout_policy(possible_moves)
             current_rollout_state = current_rollout_state.move(action)
@@ -110,8 +110,8 @@ def main():
     terez.draw()
     terez.draw()
 
-    initialstate = TriHoreState(game.player, game.player, game.players, game.deck.cards[-1], game.player.hand, [],
-                                game.deck.cards[1:])
+
+    initialstate=TriHoreState(current_player=game.player,played_cards=[],uncovered_cards=game.deck.cards[1:],tablecard=game.deck.cards[-1],players=game.players)
     root = MonteCarloTreeSearchNode(state=initialstate)
     selected_node = root.best_action()
     return
