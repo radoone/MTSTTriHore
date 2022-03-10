@@ -110,8 +110,8 @@ def main():
     terez.draw()
     terez.draw()
 
-
-    initialstate=TriHoreState(current_player=game.player,played_cards=[],uncovered_cards=game.deck.cards[1:],tablecard=game.deck.cards[-1],players=game.players)
+    initialstate = TriHoreState(current_player=game.player,player=game.player, played_cards=[], uncovered_cards=game.deck.cards[1:],
+                                tablecard=game.deck.cards[-1], players=game.players)
     root = MonteCarloTreeSearchNode(state=initialstate)
     selected_node = root.best_action()
     return

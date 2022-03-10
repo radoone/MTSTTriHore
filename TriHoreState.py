@@ -1,14 +1,17 @@
 import copy
 
 from Card import Card
-from Deck import Deck
 from Player import Player
+
+
 
 
 class TriHoreState:
 
     def __init__(
-            self, current_player: Player, players, tablecard: object, played_cards: object, uncovered_cards: object):
+            self, current_player: Player, player: Player, players, tablecard: Card, played_cards: list,
+            uncovered_cards: list) -> None:
+        self.player = player
         self.game_result_value = None
         self.result = None
         self.done = False
@@ -16,11 +19,10 @@ class TriHoreState:
         self.tablecard = tablecard
         self.current_player = current_player
         self.players = players
-        self.deck = Deck()
-        self.deck.cards
-        self.deck.cards.append(tablecard)
+        # self.deck = Deck()
+        self.played_cards.append(self.tablecard)
         self.uncovered_cards = uncovered_cards
-        self.deck.cards += uncovered_cards + played_cards
+        # self.deck.cards += uncovered_cards + played_cards
         print("Start------------------------------------------------")
         print(
             f'Hrac: {self.current_player.name}  Karty:{self.current_player.hand} "Na stole: " {self.tablecard}')
@@ -61,7 +63,8 @@ class TriHoreState:
     def game_result(self):
         if self.current_player == self.player and self.game_result_value is not None:
             return self.game_result_value
-        elif not self.current_player == self.player and self.game_result_value is not None and not self.game_result_value == 0:
+        elif not self.current_player == self.player and self.game_result_value \
+                is not None and not self.game_result_value == 0:
             return -1
 
     @property
@@ -75,12 +78,13 @@ class TriHoreState:
     def move(self, action):
         print("Action: {0}".format(action))
         if action == "Draw":
-            if not len(self.deck.cards):
+            if not len(self.played_cards.cards+self.uncovered_cards):
                 self.done = True
                 self.result = "No card left for draw"
                 self.game_result_value = 0
                 return TriHoreState(
                     current_player=self.current_player,
+                    player=self.player,
                     players=self.players,
                     tablecard=self.tablecard,
                     played_cards=self.played_cards,
@@ -90,6 +94,7 @@ class TriHoreState:
             self.current_player = self.get_next_player
             return TriHoreState(
                 current_player=self.current_player,
+                player=self.player,
                 players=self.players,
                 tablecard=self.tablecard,
                 played_cards=self.played_cards,
@@ -97,15 +102,16 @@ class TriHoreState:
             )
 
         elif action.value == "VII":
-            self.deck.cards.append(action)
+            self.played_cards.append(action)
             self.current_player.hand.remove(action)
 
-            if not len(self.deck.cards) - 3:
+            if not len(self.played_cards+self.uncovered_cards) - 3:
                 self.done = True
                 self.result = "No card left for 3 draw"
                 self.game_result_value = 0
                 return TriHoreState(
                     current_player=self.current_player,
+                    player=self.player,
                     players=self.players,
                     tablecard=self.tablecard,
                     played_cards=self.played_cards,
@@ -135,6 +141,7 @@ class TriHoreState:
             self.current_player = self.get_next_player
 
             return TriHoreState(
+                player=self.player,
                 current_player=self.current_player,
                 players=self.players,
                 tablecard=self.tablecard,
@@ -144,7 +151,7 @@ class TriHoreState:
 
         elif hasattr(action, 'change'):
             self.tablecard.suit = action.change
-            self.deck.played_cards.append(action)
+            self.played_cards.append(action)
 
             for card in self.current_player.hand:
                 if card.value == action.value and card.suit == action.suit:
@@ -169,8 +176,21 @@ class TriHoreState:
         self.current_player = self.get_next_player
         return TriHoreState(
             current_player=self.current_player,
+            player=self.player,
             players=self.players,
             tablecard=self.tablecard,
             played_cards=self.played_cards,
             uncovered_cards=self.uncovered_cards
         )
+
+        def draw(self,uncovered_card: list(Card), played_card: list(Card)):
+            card = None
+            # TODO: random get ?
+            if len(uncovered_card) > 0:
+                card = uncovered_card.pop()
+            elif len(played_card) > 0:
+                card = played_card
+            else:
+                raise Exception("No card to draw")
+        return card
+
