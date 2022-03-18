@@ -1,3 +1,5 @@
+import random
+
 import numpy as np
 from collections import defaultdict
 
@@ -7,6 +9,7 @@ from TriHoreState import TriHoreState
 
 
 class MonteCarloTreeSearchNode:
+
     def __init__(self, state, parent=None, parent_action=None):
         self.state = state
         self.parent = parent
@@ -17,9 +20,10 @@ class MonteCarloTreeSearchNode:
         self._results[1] = 0
         self._results[-1] = 0
         self._untried_actions = None
-        self._untried_actions = self.untried_actions()
+        self._untried_actions = self.untried_actions
         return
 
+    @property
     def untried_actions(self):
         self._untried_actions = self.state.get_legal_actions
         return self._untried_actions
@@ -41,8 +45,8 @@ class MonteCarloTreeSearchNode:
         self.children.append(child_node)
         return child_node
 
-    def is_terminal_node(self):
-        return self.state.is_game_over
+    def is_terminal_node(self)->bool:
+        return self.state.is_game_over()
 
     def rollout(self):
         current_rollout_state = self.state
@@ -71,7 +75,7 @@ class MonteCarloTreeSearchNode:
         return self.children[np.argmax(choices_weights)]
 
     def rollout_policy(self, possible_moves):
-        return possible_moves[np.random.randint(len(possible_moves))]
+        return list(possible_moves)[np.random.randint(len(possible_moves))]
 
     def _tree_policy(self):
 
@@ -85,7 +89,7 @@ class MonteCarloTreeSearchNode:
         return current_node
 
     def best_action(self):
-        simulation_no = 100
+        simulation_no = 1000000000
         for i in range(simulation_no):
             v = self._tree_policy()
             reward = v.rollout()
@@ -102,7 +106,7 @@ def main():
     karol.draw()
     karol.draw()
     karol.draw()
-    terez.draw()
+    karol.draw()
     terez.draw()
     terez.draw()
     terez.draw()
@@ -110,10 +114,12 @@ def main():
     terez.draw()
     terez.draw()
 
-    initialstate = TriHoreState(current_player=game.player,player=game.player, played_cards=[], uncovered_cards=game.deck.cards[1:],
-                                tablecard=game.deck.cards[-1], players=game.players)
+    initialstate = TriHoreState(current_player=game.player, player=game.player, played_cards=set(),
+                                uncovered_cards=game.deck.cards,
+                                tablecard=game.deck.table_card, players=game.players)
     root = MonteCarloTreeSearchNode(state=initialstate)
     selected_node = root.best_action()
+    print(selected_node)
     return
 
 

@@ -1,11 +1,14 @@
 class Player:
+    hand: set
+
     def __init__(self, name, game):
         self.name = name
-        self.hand = []
+        self.hand = set()
         self.game = game
 
     def draw(self):
-        self.hand.append(self.game.deck.drawCard())
+        self.hand.add(self.game.deck.drawCard())
+
         return self
 
     def showHand(self):
@@ -18,3 +21,4 @@ class Player:
 
     def validmoves(self):
         return self.game.validmoves()
+

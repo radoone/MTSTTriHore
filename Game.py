@@ -7,7 +7,7 @@ class Game:
         self.deck = Deck()
         self.deck.build()
         self.deck.shuffle()
-        self.deck.drawtablecard()
+        self.deck.drawTableCard()
         self.players = []
         self.done = False
         self.result = None

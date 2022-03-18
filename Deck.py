@@ -1,4 +1,4 @@
-from random import  randint
+from random import randint
 from typing import List, Any
 
 from Card import Card
@@ -9,7 +9,8 @@ class Deck:
 
     def __init__(self):
         self.cards = []
-        self.played_cards = []
+        self.played_cards = {}
+        self.table_card: Card = None
 
     def build(self):
         for v in ["Zelen", "Cerven", "Gula", "Srdce"]:
@@ -25,11 +26,12 @@ class Deck:
         for c in self.cards:
             c.show()
 
-    def drawCard(self):
+    def drawCard(self) -> Card:
         return self.cards.pop()
 
-    def drawtablecard(self):
-        self.cards.append(self.drawCard())
+    def drawTableCard(self) -> Card:
+        self.table_card = self.drawCard()
+        return self.table_card
 
-    def put(self, Card):
-        self.cards.append(Card)
+    def put(self, card):
+        self.cards.append(card)
