@@ -56,8 +56,11 @@ class TriHoreState:
         #        and not card.value == "Hornik"
         # ):
 
+
+
         if card.value == self.tablecard.value or card.suit == self.tablecard.suit:
             return card
+
 
     def get_legal_actions(self):
         actions = ["Draw"]

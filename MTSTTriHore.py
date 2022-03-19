@@ -79,7 +79,7 @@ class MonteCarloTreeSearchNode():
         return current_node
 
     def best_action(self):
-        simulation_no = 1000000
+        simulation_no = 100
         for i in range(simulation_no):
             v = self._tree_policy()
             reward = v.rollout()
@@ -93,17 +93,17 @@ def main():
     karol = game.addPlayer("Karolinka")
     terez = game.addPlayer("Terezia")
 
-   # karol.draw()
-    #karol.draw()
-    #karol.draw()
-    #karol.draw()
+    karol.draw()
+    karol.draw()
+    karol.draw()
+    karol.draw()
     karol.draw()
     terez.draw()
-   # terez.draw()
-    #terez.draw()
-    #terez.draw()
-    #terez.draw()
-    #terez.draw()
+    terez.draw()
+    terez.draw()
+    terez.draw()
+    terez.draw()
+    terez.draw()
 
     initialstate = TriHoreState(current_player=game.player, player=game.player, played_cards=set(),
                                 uncovered_cards=game.deck.cards,
